@@ -5,17 +5,18 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def in_(self,node,order):
-        if node==None:
-            return 
-        self.in_(node.left,order)
-        order.append(node.val)
-        self.in_(node.right,order)
+    def in_(self, node):
+        if node is None:
+            return
+        self.in_(node.left)
+        if self.prev is not None:
+            self.ans = min(self.ans, node.val - self.prev)
+        self.prev = node.val
+        self.in_(node.right)
+
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
-        order=[]
-        ans=float('inf')
-        self.in_(root,order)
-        
-        for i in range(1,len(order)):
-            ans=min(ans,(abs(order[i]-order[i-1])))
-        return ans
+        self.prev = None
+        self.ans = float('inf')
+        self.in_(root)
+
+        return self.ans
